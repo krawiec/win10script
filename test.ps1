@@ -575,8 +575,8 @@ $essentialtweaks.Add_Click({
     Write-Host "Stopping and disabling WAP Push Service..."
 	Stop-Service "dmwappushservice" -WarningAction SilentlyContinue
 	Set-Service "dmwappushservice" -StartupType Disabled
-    Write-Host "Enabling F8 boot menu options..."
-	bcdedit /set `{current`} bootmenupolicy Legacy | Out-Null
+#    Write-Host "Enabling F8 boot menu options..."
+#	bcdedit /set `{current`} bootmenupolicy Legacy | Out-Null
     Write-Host "Stopping and disabling Home Groups services..."
 	Stop-Service "HomeGroupListener" -WarningAction SilentlyContinue
 	Set-Service "HomeGroupListener" -StartupType Disabled
@@ -592,37 +592,37 @@ $essentialtweaks.Add_Click({
     Write-Host "Stopping and disabling Superfetch service..."
 	Stop-Service "SysMain" -WarningAction SilentlyContinue
 	Set-Service "SysMain" -StartupType Disabled
-    Write-Host "Setting BIOS time to UTC..."
-	Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\TimeZoneInformation" -Name "RealTimeIsUniversal" -Type DWord -Value 1
+#    Write-Host "Setting BIOS time to UTC..."
+#	Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\TimeZoneInformation" -Name "RealTimeIsUniversal" -Type DWord -Value 1
     Write-Host "Disabling Hibernation..."
 	Set-ItemProperty -Path "HKLM:\System\CurrentControlSet\Control\Session Manager\Power" -Name "HibernteEnabled" -Type Dword -Value 0
 	If (!(Test-Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FlyoutMenuSettings")) {
 		New-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FlyoutMenuSettings" | Out-Null
 	}
 	Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FlyoutMenuSettings" -Name "ShowHibernateOption" -Type Dword -Value 0
-    Write-Host "Showing task manager details..."
-	$taskmgr = Start-Process -WindowStyle Hidden -FilePath taskmgr.exe -PassThru
-	Do {
-		Start-Sleep -Milliseconds 100
-		$preferences = Get-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\TaskManager" -Name "Preferences" -ErrorAction SilentlyContinue
-	} Until ($preferences)
-	Stop-Process $taskmgr
-	$preferences.Preferences[28] = 0
-	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\TaskManager" -Name "Preferences" -Type Binary -Value $preferences.Preferences
-    Write-Host "Showing file operations details..."
-	If (!(Test-Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\OperationStatusManager")) {
-		New-Item -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\OperationStatusManager" | Out-Null
-	}
-	Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\OperationStatusManager" -Name "EnthusiastMode" -Type DWord -Value 1
-    Write-Host "Hiding Task View button..."
-	Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "ShowTaskViewButton" -Type DWord -Value 0
-    Write-Host "Hiding People icon..."
-	If (!(Test-Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced\People")) {
-		New-Item -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced\People" | Out-Null
-	}
-	Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced\People" -Name "PeopleBand" -Type DWord -Value 0
-    Write-Host "Showing all tray icons..."
-	Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer" -Name "EnableAutoTray" -Type DWord -Value 0
+#    Write-Host "Showing task manager details..."
+#	$taskmgr = Start-Process -WindowStyle Hidden -FilePath taskmgr.exe -PassThru
+#	Do {
+#		Start-Sleep -Milliseconds 100
+#		$preferences = Get-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\TaskManager" -Name "Preferences" -ErrorAction SilentlyContinue
+#	} Until ($preferences)
+#	Stop-Process $taskmgr
+#	$preferences.Preferences[28] = 0
+#	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\TaskManager" -Name "Preferences" -Type Binary -Value $preferences.Preferences
+ #   Write-Host "Showing file operations details..."
+#	If (!(Test-Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\OperationStatusManager")) {
+#		New-Item -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\OperationStatusManager" | Out-Null
+#	}
+#	Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\OperationStatusManager" -Name "EnthusiastMode" -Type DWord -Value 1
+ #   Write-Host "Hiding Task View button..."
+#	Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "ShowTaskViewButton" -Type DWord -Value 0
+ #   Write-Host "Hiding People icon..."
+#	If (!(Test-Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced\People")) {
+#		New-Item -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced\People" | Out-Null
+#	}
+#	Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced\People" -Name "PeopleBand" -Type DWord -Value 0
+#    Write-Host "Showing all tray icons..."
+#	Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer" -Name "EnableAutoTray" -Type DWord -Value 0
 	Write-Host "Enabling NumLock after startup..."
 	If (!(Test-Path "HKU:")) {
 		New-PSDrive -Name HKU -PSProvider Registry -Root HKEY_USERS | Out-Null
@@ -648,7 +648,7 @@ $Bloatware = @(
 	    "Microsoft.BingNews"
 	    "Microsoft.BingSports"
 	    "Microsoft.BingTranslator"
-	    "Microsoft.BingWeather"
+#	    "Microsoft.BingWeather"
         "Microsoft.GetHelp"
         "Microsoft.Getstarted"
         "Microsoft.Messaging"
@@ -699,13 +699,16 @@ $Bloatware = @(
         "*Hulu*"
         "*HiddenCity*"
         "*AdobePhotoshopExpress*"
-                     
+        
+		"Microsoft.YourPhone"
+		"Microsoft.MixedReality.Portal"
+		"SpotifyAB.SpotifyMusic"
         #Optional: Typically not removed but you can if you need to for some reason
         #"*Microsoft.Advertising.Xaml_10.1712.5.0_x64__8wekyb3d8bbwe*"
         #"*Microsoft.Advertising.Xaml_10.1712.5.0_x86__8wekyb3d8bbwe*"
         #"*Microsoft.BingWeather*"
         #"*Microsoft.MSPaint*"
-        #"*Microsoft.MicrosoftStickyNotes*"
+        "*Microsoft.MicrosoftStickyNotes*"
         #"*Microsoft.Windows.Photos*"
         #"*Microsoft.WindowsCalculator*"
         #"*Microsoft.WindowsStore*"
@@ -716,38 +719,38 @@ $Bloatware = @(
         Write-Host "Trying to remove $Bloat."
     }
 
-    Write-Host "Installing Windows Media Player..."
-	Enable-WindowsOptionalFeature -Online -FeatureName "WindowsMediaPlayer" -NoRestart -WarningAction SilentlyContinue | Out-Null
+    #Write-Host "Installing Windows Media Player..."
+	#Enable-WindowsOptionalFeature -Online -FeatureName "WindowsMediaPlayer" -NoRestart -WarningAction SilentlyContinue | Out-Null
 
     #Stops edge from taking over as the default .PDF viewer    
-    Write-Host "Stopping Edge from taking over as the default .PDF viewer"
-    $NoPDF = "HKCR:\.pdf"
-    $NoProgids = "HKCR:\.pdf\OpenWithProgids"
-    $NoWithList = "HKCR:\.pdf\OpenWithList" 
-    If (!(Get-ItemProperty $NoPDF  NoOpenWith)) {
-        New-ItemProperty $NoPDF NoOpenWith 
-    }        
-    If (!(Get-ItemProperty $NoPDF  NoStaticDefaultVerb)) {
-        New-ItemProperty $NoPDF  NoStaticDefaultVerb 
-    }        
-    If (!(Get-ItemProperty $NoProgids  NoOpenWith)) {
-        New-ItemProperty $NoProgids  NoOpenWith 
-    }        
-    If (!(Get-ItemProperty $NoProgids  NoStaticDefaultVerb)) {
-        New-ItemProperty $NoProgids  NoStaticDefaultVerb 
-    }        
-    If (!(Get-ItemProperty $NoWithList  NoOpenWith)) {
-        New-ItemProperty $NoWithList  NoOpenWith
-    }        
-    If (!(Get-ItemProperty $NoWithList  NoStaticDefaultVerb)) {
-        New-ItemProperty $NoWithList  NoStaticDefaultVerb 
-    }
+#    Write-Host "Stopping Edge from taking over as the default .PDF viewer"
+#    $NoPDF = "HKCR:\.pdf"
+#    $NoProgids = "HKCR:\.pdf\OpenWithProgids"
+#    $NoWithList = "HKCR:\.pdf\OpenWithList" 
+#    If (!(Get-ItemProperty $NoPDF  NoOpenWith)) {
+#        New-ItemProperty $NoPDF NoOpenWith 
+#    }        
+#    If (!(Get-ItemProperty $NoPDF  NoStaticDefaultVerb)) {
+#        New-ItemProperty $NoPDF  NoStaticDefaultVerb 
+#    }        
+#    If (!(Get-ItemProperty $NoProgids  NoOpenWith)) {
+#        New-ItemProperty $NoProgids  NoOpenWith 
+#    }        
+#    If (!(Get-ItemProperty $NoProgids  NoStaticDefaultVerb)) {
+#        New-ItemProperty $NoProgids  NoStaticDefaultVerb 
+#    }        
+#    If (!(Get-ItemProperty $NoWithList  NoOpenWith)) {
+#        New-ItemProperty $NoWithList  NoOpenWith
+#    }        
+#    If (!(Get-ItemProperty $NoWithList  NoStaticDefaultVerb)) {
+#        New-ItemProperty $NoWithList  NoStaticDefaultVerb 
+#    }
             
     #Appends an underscore '_' to the Registry key for Edge
-    $Edge = "HKCR:\AppXd4nrz8ff68srnhf9t5a8sbjyar1cr723_"
-    If (Test-Path $Edge) {
-        Set-Item $Edge AppXd4nrz8ff68srnhf9t5a8sbjyar1cr723_ 
-    }
+#    $Edge = "HKCR:\AppXd4nrz8ff68srnhf9t5a8sbjyar1cr723_"
+#    If (Test-Path $Edge) {
+#        Set-Item $Edge AppXd4nrz8ff68srnhf9t5a8sbjyar1cr723_ 
+#    }
 	$wshell.Popup("Operation Completed",0,"Done",0x0)
 })
 
